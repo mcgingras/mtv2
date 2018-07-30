@@ -6,6 +6,9 @@
 // CONSTANT VARIABLES
 // ---
 
+
+var MAIN_WIDTH = 600;
+var MAIN_HEIGHT = 600;
 var SIDECANVAS_WIDTH = 150;
 var SIDECANVAS_HEIGHT = 150;
 
@@ -14,6 +17,9 @@ var SCREEN_HEIGHT;
 
 var LINE_COLOR = 0;
 var STROKE_WIDTH = 5.0;
+
+var SCALE  = 4;
+var EPSILON = 2;
 
 
 
@@ -106,16 +112,16 @@ var process_screens = function(p) {
     var pt = lines[i];
 
     if (i == 0){
-      x = pt[0];
-      y = pt[1];
+      var x = pt[0]/SCALE;
+      var y = pt[1]/SCALE;
     } else {
-      dx = pt[0] - x;
-      dy = pt[1] - y;
+      var dx = (pt[0]/SCALE - x);
+      var dy = (pt[1]/SCALE - y);
 
       draw_strokes(x,y,dx,dy,p);
 
-      x = pt[0];
-      y = pt[1];
+      x = pt[0]/SCALE;
+      y = pt[1]/SCALE;
     }
   }
 }
@@ -134,7 +140,8 @@ var s = function( p ) {
   function init() {
     screen_width = Math.max(window.innerWidth, 480);
     screen_height = Math.max(window.innerHeight, 320);
-    p.createCanvas(700, 700);
+    p.frameRate(30);
+    p.createCanvas(MAIN_WIDTH, MAIN_HEIGHT);
     p.background(240);
   }
 
@@ -162,11 +169,12 @@ var s = function( p ) {
         dx = p.mouseX - x;
         dy = p.mouseY - y;
 
-        draw_strokes(x,y,dx,dy,p);
-
-        x = p.mouseX;
-        y = p.mouseY;
-        lines.push([x,y])
+        if(dx*dx+dy*dy > EPSILON*EPSILON) {
+          draw_strokes(x,y,dx,dy,p);
+          x = p.mouseX;
+          y = p.mouseY;
+          lines.push([x,y])
+        }
       }
 
     }

@@ -242,14 +242,12 @@ function displaySuggestions(arr) {
       if (a in window.stencils) {
         window.stencils[a].forEach((b) => {
             if(count < 4){
-              suggestionArr[count].innerHTML += '<img class="suggestion-img" src="' + b.src + '" s-name=""/>';
+              suggestionArr[count].innerHTML += '<img id="img'+count+'"class="suggestion-img" src="' + b.src + '" s-name=""/>';
               count++;
             }
         });
       }
     });
-
-    // document.getElementById('suggestions').addEventListener('click', btn);
 
 }
 
@@ -310,4 +308,47 @@ var s4   = new p5(s4, s4box);
 var submit_button = document.getElementById('submit');
 submit_button.addEventListener('click', () => {
   submit_to_autodraw();
+})
+
+
+s1box.addEventListener('click', () => {
+  var canvas = document.getElementById('defaultCanvas0');
+  var context = canvas.getContext('2d');
+  var img = document.getElementById("img0");
+  img.crossOrigin = "Anonymous";
+  console.log(img.crossOrigin);
+  context.drawImage(img,10,10);
+});
+
+
+
+var export_button = document.getElementById('export');
+export_button.addEventListener('click', () => {
+  var canvas = document.getElementById('defaultCanvas0');
+  var context = canvas.getContext('2d');
+  var w = canvas.width;
+  var h = canvas.height;
+  var data;
+
+  data = context.getImageData(0, 0, w, h);
+  var compositeOperation = context.globalCompositeOperation;
+  context.globalCompositeOperation = "destination-over";
+  context.fillStyle = '#FFFFFF';
+  context.fillRect(0,0,w,h);
+
+  var imageData = canvas.toDataURL("image/png");
+  context.clearRect (0,0,w,h);
+  context.putImageData(data, 0,0);
+  context.globalCompositeOperation = compositeOperation;
+
+  // I cant for the life of me figure out how to make POSTs in vanilla JS
+  // and it makes me really sad
+  $.ajax({
+    type: "POST",
+    url: '/save',
+    data: {'image': imageData},
+    success: function(){
+      console.log('it worked');
+    }
+  });
 })

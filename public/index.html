@@ -2,11 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Tats</title>
+    <title>MIXI | v.Tattoo</title>
     <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.dom.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/addons/p5.sound.js"></script>
+    <script type='text/javascript' src='stencils.js'></script>
     <style>
       * {
         padding: 0;
@@ -14,7 +15,7 @@
       }
 
       body{
-        padding: 0 4rem;
+        padding: 0 6rem;
       }
 
       img{
@@ -24,14 +25,29 @@
 
       .suggestion-container{
         display: flex;
-        flex-direction: column;
-        height: 700px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        height: 600px;
+        width: 600px;
         justify-content: space-between;
+        align-items: center;
       }
 
       .suggestion-item{
         border: 2px solid black;
         display: inline-block;
+        position: relative;
+        height: 200px;
+        width: 200px;
+      }
+
+      .suggestion-img{
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
 
       .container{
@@ -56,6 +72,8 @@
         <div id="js--suggest-4" class="suggestion-item"></div>
       </div>
     </div>
+
+    <button id="submit">submit</button>
 
     <script type="text/javascript" src="sketch.js"></script>
   </body>

@@ -24,7 +24,6 @@ var EPSILON = 2;
 var RESET_STRING = 'reset';
 
 
-
 // VARIABLES THAT ARE GOING TO CHANGE
 // ---
 
@@ -170,7 +169,7 @@ var s = function( p ) {
   */
   var process_user_input = function() {
 
-    if (p.mouseIsPressed) { // should bound this to the box...
+    if (p.mouseIsPressed && p.mouseX > 0 && p.mouseX < 600 && p.mouseY < 600 && p.mouseY > 0 ) { // should bound this to the box...
       if (!currently_drawing){ // not currently drawing
         x = p.mouseX;
         y = p.mouseY;
@@ -236,7 +235,6 @@ Display Suggestions
 */
 function displaySuggestions(arr) {
     var count = 0; // number of suggestion boxes... can change?
-    console.log(arr);
     cacheArr = [];
     // console.log(elem.innerHTML);
     arr.forEach((a) => {
@@ -317,12 +315,34 @@ s1box.addEventListener('click', () => {
   var canvas = document.getElementById('defaultCanvas0');
   var context = canvas.getContext('2d');
   var img = new Image();
+  var dimensions = getDimensions(adx, ady);
+  var position = getPosition(adx, ady);
+  var h = dimensions[0];
+  var w = dimensions[1];
+  var x = position[0] - w;
+  var y = position[1] - h;
   img.src = './imgs/cache0.svg';
+  resetScreen();
   img.onload = function(){
     console.log('loaded');
-    context.drawImage(img,0,0,200,200);
+    context.drawImage(img,x,y,h,w);
   };
 });
+
+var resetScreen = function() {
+  // clear all the position and time arrays
+  adx = [];
+  ady = [];
+  adt = [];
+  lines = [];
+
+  var imgs = Array.from(document.getElementsByClassName('suggestion-img'));
+  var l = imgs.length;
+  for (var i = 0; i < l; i++) {
+    var img = imgs[i];
+    img.parentNode.removeChild(img);
+  }
+}
 
 // arr is the array of images that should be cached.
 // 'cached' means I am storing them in a temp img folder.
@@ -337,6 +357,39 @@ var cacheImages = function(arr) {
       console.log('it worked');
     }
   });
+
+}
+
+/*
+Get Dimensions
+---
+
+We need this function to get the width/height of the users drawing. Probably
+going to have to do this on a stroke by stroke basis. There are so many moving parts
+to this project, YIKES alert, it needs some organizing but I dont Have TIME!
+
+probably just need to clear this whenever they submit.
+aka that would turn into a new drawing duh.
+*/
+var getDimensions = function(adx,ady){
+  var maxX = Math.max.apply(null, adx);
+  var minX = Math.min.apply(null, adx);
+  var maxY = Math.max.apply(null, ady);
+  var minY = Math.min.apply(null, ady);
+
+  var dx = maxX - minX;
+  var dy = maxY - minY;
+
+  return [dx,dy];
+}
+
+var getPosition = function(adx, ady){
+  var xSort = adx.slice(0).sort();
+  var ySort = ady.slice(0).sort(); // we dont want to mutate these arrays.
+
+  var mid = parseInt(xSort.length/2); // mid is same for both... needs to be integer for array indexing later.
+
+  return [adx[mid], ady[mid]];
 
 }
 

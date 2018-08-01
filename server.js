@@ -27,7 +27,8 @@ app.post('/save', (req, res) => {
 });
 
 app.post('/cache', (req, res) => {
-  var urls = req.body['urls[]'];
+  console.log(req.body);
+  var urls = req.body['urls'];
   urls.forEach((url,i) => {
     download(url, './public/imgs/cache'+i+'.svg', function(){
       console.log('picture saved'); //?

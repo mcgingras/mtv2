@@ -237,18 +237,20 @@ Display Suggestions
 function displaySuggestions(arr) {
     var count = 0; // number of suggestion boxes... can change?
     console.log(arr);
+    cacheArr = [];
     // console.log(elem.innerHTML);
     arr.forEach((a) => {
       if (a in window.stencils) {
         window.stencils[a].forEach((b) => {
             if(count < 4){
-              suggestionArr[count].innerHTML += '<img id="img'+count+'"class="suggestion-img" src="' + b.src + '" s-name=""/>';
+              suggestionArr[count].innerHTML += '<img id="img'+count+'"class="suggestion-img" src="' + b.src + '"/>';
+              cacheArr.push(b.src);
               count++;
             }
         });
       }
     });
-
+    cacheImages(cacheArr);
 }
 
 /*
@@ -314,13 +316,29 @@ submit_button.addEventListener('click', () => {
 s1box.addEventListener('click', () => {
   var canvas = document.getElementById('defaultCanvas0');
   var context = canvas.getContext('2d');
-  var img = document.getElementById("img0");
-  img.crossOrigin = "Anonymous";
-  console.log(img.crossOrigin);
-  context.drawImage(img,10,10);
+  var img = new Image();
+  img.src = './imgs/cache0.svg';
+  img.onload = function(){
+    console.log('loaded');
+    context.drawImage(img,0,0,200,200);
+  };
 });
 
+// arr is the array of images that should be cached.
+// 'cached' means I am storing them in a temp img folder.
+// have not yet thoght about cache redundency
+var cacheImages = function(arr) {
+  var data = JSON.stringify({'urls': arr});
+  $.ajax({
+    type: "POST",
+    url: '/cache',
+    data: {'urls': arr},
+    success: function(){
+      console.log('it worked');
+    }
+  });
 
+}
 
 var export_button = document.getElementById('export');
 export_button.addEventListener('click', () => {

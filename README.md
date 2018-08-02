@@ -1,3 +1,5 @@
 ## MIXI x Mad Tatter
----
-This project is legit.
+
+IDEO CoLab Brief - Sketch to Search
+
+Using AI to augment the design process when creating a novel tattoo.

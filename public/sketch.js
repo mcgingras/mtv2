@@ -45,6 +45,7 @@ var adx = []; // autodraw x
 var ady = []; // autodraw y
 var adt = []; // autodraw time
 
+
 var s1 = function( p ) {
 
    p.setup = function() {
@@ -329,6 +330,8 @@ s1box.addEventListener('click', () => {
   };
 });
 
+
+
 var resetScreen = function() {
   // clear all the position and time arrays
   adx = [];
@@ -342,6 +345,10 @@ var resetScreen = function() {
     var img = imgs[i];
     img.parentNode.removeChild(img);
   }
+  var canvas = document.getElementById('defaultCanvas0');
+  var context = canvas.getContext('2d');
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  // going to have to put all the images back on thes creen
 }
 
 // arr is the array of images that should be cached.

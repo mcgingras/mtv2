@@ -29,8 +29,12 @@ app.post('/save', (req, res) => {
 app.post('/cache', (req, res) => {
   console.log(req.body);
   var urls = req.body['urls'];
-  urls.forEach((url,i) => {
-    download(url, './public/imgs/cache'+i+'.svg', function(){
+  urls.forEach((url) => {
+    var meta = url.split('/')
+    var artist  = meta[meta.length-2];
+    var title   = meta[meta.length-1];
+    // download(url, './public/imgs/'+artist+'/'+title, function(){
+    download(url, './public/imgs/'+artist+title, function(){
       console.log('picture saved'); //?
     });
   });

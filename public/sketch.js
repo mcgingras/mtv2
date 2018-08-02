@@ -316,28 +316,33 @@ submit_button.addEventListener('click', () => {
 
 
 var drawImage = function() {
-  var id = this.children[0].getAttribute('data-id');
-  console.log(id);
   var canvas = document.getElementById('defaultCanvas0');
   var context = canvas.getContext('2d');
-  var img = new Image();
   var dimensions = getDimensions(adx, ady);
   var position = getPosition(adx, ady);
   var h = dimensions[0];
   var w = dimensions[1];
   var x = position[0] - w;
   var y = position[1] - h;
-  img.src = './imgs/cache'+id+'.svg';
+
+  var img = new Image();
+
+  var src = this.children[1].getAttribute('src');
+  var meta = src.split('/')
+  var artist  = meta[meta.length-2];
+  var title   = meta[meta.length-1];
+
+  img.src = './imgs/'+artist+title;
   resetScreen();
   img.onload = function(){
     console.log('loaded');
     context.drawImage(img,x,y,h,w);
   };
+
 }
 
 var suggestionBoxes = document.getElementsByClassName("suggestion-item");
 Array.from(suggestionBoxes).forEach(function(element) {
-      console.log(element);
       element.addEventListener('click', drawImage);
 });
 
@@ -357,7 +362,7 @@ var resetScreen = function() {
   var canvas = document.getElementById('defaultCanvas0');
   var context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
-  // going to have to put all the images back on thes creen
+  // going to have to put all the images back on the screen
 }
 
 // arr is the array of images that should be cached.

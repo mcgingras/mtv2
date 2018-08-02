@@ -339,6 +339,8 @@ var drawImage = function() {
     context.drawImage(img,x,y,h,w);
   };
 
+  // to save for later
+  adHistory.push([img,x,y,h,w]);
 }
 
 var suggestionBoxes = document.getElementsByClassName("suggestion-item");
@@ -363,6 +365,12 @@ var resetScreen = function() {
   var context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
   // going to have to put all the images back on the screen
+
+  adHistory.forEach((img) => {
+    // var i = new Image();
+    context.drawImage(img[0],img[1],img[2],img[3],img[4]);
+
+  })
 }
 
 // arr is the array of images that should be cached.

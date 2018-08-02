@@ -7,21 +7,20 @@
 // ---
 
 
-var MAIN_WIDTH = 600;
-var MAIN_HEIGHT = 600;
-var SIDECANVAS_WIDTH = 200;
-var SIDECANVAS_HEIGHT = 200;
+const MAIN_WIDTH = 600;
+const MAIN_HEIGHT = 600;
+const SIDECANVAS_WIDTH = 200;
+const SIDECANVAS_HEIGHT = 200;
 
 var SCREEN_WIDTH;
 var SCREEN_HEIGHT;
 
-var LINE_COLOR = 0;
-var STROKE_WIDTH = 5.0;
+const LINE_COLOR = 0;
+const STROKE_WIDTH = 5.0;
+const SCALE  = MAIN_WIDTH/SIDECANVAS_WIDTH;
+const EPSILON = 2;
 
-var SCALE  = MAIN_WIDTH/SIDECANVAS_WIDTH;
-var EPSILON = 2;
-
-var RESET_STRING = 'reset';
+const RESET_STRING = 'reset';
 
 
 // VARIABLES THAT ARE GOING TO CHANGE
@@ -40,16 +39,17 @@ var y;
 var currently_drawing = false; // currently_drawing... is the user drawing _right now_
 
 var lines = []; // what lines are in the users drawing??
-
 var adx = []; // autodraw x
 var ady = []; // autodraw y
 var adt = []; // autodraw time
+var adHistory = []; // array of AD drawings added to canvas so it can be repopulated
 
 
 var s1 = function( p ) {
 
    p.setup = function() {
-     p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     var cv = p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     cv.attribute('data-id', 0);
     //  p.background(150);
    }
 
@@ -61,7 +61,8 @@ var s1 = function( p ) {
 var s2 = function( p ) {
 
    p.setup = function() {
-     p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     var cv = p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     cv.attribute('data-id', 1);
     //  p.background(150);
    }
 
@@ -73,7 +74,8 @@ var s2 = function( p ) {
 var s3 = function( p ) {
 
    p.setup = function() {
-     p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     var cv = p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     cv.attribute('data-id', 2);
     //  p.background(150);
    }
 
@@ -85,7 +87,8 @@ var s3 = function( p ) {
 var s4 = function( p ) {
 
    p.setup = function() {
-     p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     var cv = p.createCanvas(SIDECANVAS_WIDTH, SIDECANVAS_HEIGHT);
+     cv.attribute('data-id', 3);
     //  p.background(150);
    }
 
@@ -312,7 +315,9 @@ submit_button.addEventListener('click', () => {
 })
 
 
-s1box.addEventListener('click', () => {
+var drawImage = function() {
+  var id = this.children[0].getAttribute('data-id');
+  console.log(id);
   var canvas = document.getElementById('defaultCanvas0');
   var context = canvas.getContext('2d');
   var img = new Image();
@@ -322,15 +327,19 @@ s1box.addEventListener('click', () => {
   var w = dimensions[1];
   var x = position[0] - w;
   var y = position[1] - h;
-  img.src = './imgs/cache0.svg';
+  img.src = './imgs/cache'+id+'.svg';
   resetScreen();
   img.onload = function(){
     console.log('loaded');
     context.drawImage(img,x,y,h,w);
   };
+}
+
+var suggestionBoxes = document.getElementsByClassName("suggestion-item");
+Array.from(suggestionBoxes).forEach(function(element) {
+      console.log(element);
+      element.addEventListener('click', drawImage);
 });
-
-
 
 var resetScreen = function() {
   // clear all the position and time arrays

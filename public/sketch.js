@@ -322,8 +322,14 @@ var drawImage = function() {
   var position = getPosition(adx, ady);
   var h = dimensions[0];
   var w = dimensions[1];
-  var x = position[0] - w;
-  var y = position[1] - h;
+  var size = Math.max(h,w);
+  h = size;
+  w = size;
+  console.log(size);
+  // var h = 200;
+  // var w = 200;
+  var x = position[0]-w/2;
+  var y = position[1]-h/2;
 
   var img = new Image();
 
@@ -413,13 +419,10 @@ var getDimensions = function(adx,ady){
 }
 
 var getPosition = function(adx, ady){
-  var xSort = adx.slice(0).sort();
-  var ySort = ady.slice(0).sort(); // we dont want to mutate these arrays.
+  var xAvg = (Math.max.apply(null, adx) + Math.min.apply(null, adx)) / 2;
+  var yAvg = (Math.max.apply(null, ady) + Math.min.apply(null, ady)) / 2;
 
-  var mid = parseInt(xSort.length/2); // mid is same for both... needs to be integer for array indexing later.
-
-  return [adx[mid], ady[mid]];
-
+  return [xAvg,yAvg];
 }
 
 var export_button = document.getElementById('export');

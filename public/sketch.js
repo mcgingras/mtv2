@@ -307,7 +307,6 @@ var drawImage = function() {
   var size = Math.max(h,w);
   h = size;
   w = size;
-  console.log(size);
   // var h = 200;
   // var w = 200;
   var x = position[0]-w/2;
@@ -432,11 +431,21 @@ export_button.addEventListener('click', () => {
     type: "POST",
     url: '/save',
     data: {'image': imageData},
-    success: function(){
-      console.log('it worked');
+    success: function(res){
+      if(res){
+        var imgID = res;
+        displayGan(imgID);
+        console.log('it worked');
+      }
     }
   });
 })
+
+
+var displayGan = function(id) {
+  var path = './imgs/gans/'+id+'/images/sketch-outputs.png'
+  suggestionArr[0].innerHTML += '<img id="img0" class="suggestion-img" src="' + path + '"/>';
+}
 
 
 /* Processing Instantiations

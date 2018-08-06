@@ -290,24 +290,6 @@ var submit_to_autodraw = function(){
   });
 }
 
-
-
-// Processing Instantiations
-var s1box = document.getElementById('js--suggest-1');
-var s2box = document.getElementById('js--suggest-2');
-var s3box = document.getElementById('js--suggest-3');
-var s4box = document.getElementById('js--suggest-4');
-
-var suggestionArr = [s1box, s2box, s3box, s4box];
-
-var myp5 = new p5(s, document.getElementById('js--main-canvas'));
-var s1   = new p5(s1, s1box);
-var s2   = new p5(s2, s2box);
-var s3   = new p5(s3, s3box);
-var s4   = new p5(s4, s4box);
-
-
-
 // Regular JS stuff
 var submit_button = document.getElementById('submit');
 submit_button.addEventListener('click', () => {
@@ -359,7 +341,7 @@ var resetScreen = function() {
   adx = [];
   ady = [];
   adt = [];
-  lines = [];
+  lines = [RESET_STRING];
 
   var imgs = Array.from(document.getElementsByClassName('suggestion-img'));
   var l = imgs.length;
@@ -455,3 +437,22 @@ export_button.addEventListener('click', () => {
     }
   });
 })
+
+
+/* Processing Instantiations
+ The reason for creating multple processing sketches is intentional --
+ It makes it much easier to move the canvases around the screen using CSS
+ rather than having to define locations using processing which is a trash way to do it.
+*/
+var s1box = document.getElementById('js--suggest-1');
+var s2box = document.getElementById('js--suggest-2');
+var s3box = document.getElementById('js--suggest-3');
+var s4box = document.getElementById('js--suggest-4');
+
+var suggestionArr = [s1box, s2box, s3box, s4box];
+
+var myp5 = new p5(s, document.getElementById('js--main-canvas'));
+var s1   = new p5(s1, s1box);
+var s2   = new p5(s2, s2box);
+var s3   = new p5(s3, s3box);
+var s4   = new p5(s4, s4box);

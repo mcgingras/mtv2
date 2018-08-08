@@ -9,8 +9,8 @@
 
 const MAIN_WIDTH = 600;
 const MAIN_HEIGHT = 600;
-const SIDECANVAS_WIDTH = 200;
-const SIDECANVAS_HEIGHT = 200;
+const SIDECANVAS_WIDTH = 250;
+const SIDECANVAS_HEIGHT = 250;
 
 var SCREEN_WIDTH;
 var SCREEN_HEIGHT;
@@ -43,6 +43,8 @@ var adx = []; // autodraw x
 var ady = []; // autodraw y
 var adt = []; // autodraw time
 var adHistory = []; // array of AD drawings added to canvas so it can be repopulated
+
+var ganType = "pizza"; // the state of the GAN filter. changes when clicking the buttons.
 
 
 var s1 = function( p ) {
@@ -160,7 +162,6 @@ var s = function( p ) {
     screen_height = Math.max(window.innerHeight, 320);
     p.frameRate(30);
     p.createCanvas(MAIN_WIDTH, MAIN_HEIGHT);
-    p.background(240);
   }
 
   /*
@@ -424,18 +425,19 @@ export_button.addEventListener('click', () => {
   context.clearRect (0,0,w,h);
   context.putImageData(data, 0,0);
   context.globalCompositeOperation = compositeOperation;
+  canvas.style.webkitFilter = "blur(3px)";
+  removeClass(spinner, 'hidden');
 
   // I cant for the life of me figure out how to make POSTs in vanilla JS
   // and it makes me really sad
   $.ajax({
     type: "POST",
     url: '/save',
-    data: {'image': imageData},
+    data: {'image': imageData, 'type': ganType},
     success: function(res){
       if(res){
         var imgID = res;
         displayGan(imgID);
-        console.log('it worked');
       }
     }
   });
@@ -443,6 +445,9 @@ export_button.addEventListener('click', () => {
 
 
 var displayGan = function(id) {
+  addClass(spinner,'hidden');
+  var canvas = document.getElementById('defaultCanvas0');
+  canvas.style.webkitFilter = "blur(0px)";
   var path = './imgs/gans/'+id+'/images/sketch-outputs.png'
   suggestionArr[0].innerHTML += '<img id="img0" class="suggestion-img" src="' + path + '"/>';
 }
@@ -465,3 +470,41 @@ var s1   = new p5(s1, s1box);
 var s2   = new p5(s2, s2box);
 var s3   = new p5(s3, s3box);
 var s4   = new p5(s4, s4box);
+
+var pizzaGAN = document.getElementById('js--pizza');
+var watercolorGAN = document.getElementById('js--watercolor');
+var bwGAN = document.getElementById('js--bw');
+
+var spinner = document.getElementById('js--loading-spinner');
+
+Array.from([pizzaGAN, watercolorGAN, bwGAN]).forEach(function(element) {
+      var type = element.getAttribute('data-type');
+      element.addEventListener('click', () => {
+        ganType = type;
+        Array.from([pizzaGAN, watercolorGAN, bwGAN]).forEach(function(element){
+          if(hasClass(element, 'button--active')){
+            removeClass(element,'button--active');
+          }
+        });
+        console.log(element);
+        addClass(element,'button--active');
+       });
+});
+
+
+/////// helper functions //////
+
+function hasClass(ele,cls) {
+  return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+}
+
+function addClass(ele,cls) {
+  if (!hasClass(ele,cls)) ele.className += " "+cls;
+}
+
+function removeClass(ele,cls) {
+  if (hasClass(ele,cls)) {
+    var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+    ele.className=ele.className.replace(reg,' ');
+  }
+}

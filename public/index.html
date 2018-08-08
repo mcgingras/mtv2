@@ -19,10 +19,11 @@
 
   </head>
   <body>
-    <img src="mix.svg" alt="logo">
 
-    <div class="container">
-      <div id="js--main-canvas" class=""></div>
+    <div class="container container--large">
+      <div id="js--main-canvas" class="main-canvas">
+        <div class="lds-dual-ring hidden" id="js--loading-spinner"></div>
+      </div>
       <div class="suggestion-container">
         <div id="js--suggest-1" class="suggestion-item"></div>
         <div id="js--suggest-2" class="suggestion-item"></div>
@@ -31,8 +32,19 @@
       </div>
     </div>
 
-    <button id="submit">submit</button>
-    <button id="export">export</button>
+    <div class="container container--small">
+      <div class="button-group">
+        <button id="submit" class="button">submit</button>
+        <button id="export" class="button">export</button>
+      </div>
+
+      <div class="button-group">
+        <button id="js--pizza" data-type="pizza" class="button--active button">Pizza</button>
+        <button id="js--watercolor" data-type="watercolor" class="button">Watercolor</button>
+        <button id="js--bw" data-type="bw" class="button">Black & White</button>
+      </div>
+    </div>
+
 
     <script type="text/javascript" src="sketch.js"></script>
   </body>

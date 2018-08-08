@@ -24,19 +24,35 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/save', (req, res) => {
   const image = req.body.image;
+  const type  = req.body.type;
   var time = String(Date.now());
+  var models = [];
   base64Img.imgSync(req.body.image, './GAN/inputData/'+time, 'sketch');
-
   var processGan = ['./GAN/tools/process.py', '--input_dir', './GAN/inputData/'+time, '--b_dir', './GAN/inputData/'+time, '--operation', 'combine', '--output_dir', './GAN/images/inputs/'+time];
-  var runGan = ['./GAN/pix2pix.py', '--mode', 'test', '--output_dir', './public/imgs/gans/'+time, '--input_dir', './GAN/images/inputs/'+time, '--checkpoint', './GAN/models/pointilism_train'];
+
+  if (type == 'pizza'){
+    models.push('pizza');
+  }
+
+  else if (type == "watercolor"){
+    models.push('rose');
+    models.push('space');
+  }
+
+  else if (type == "bw"){
+    models.push('pointilism');
+  }
 
   const pro = spawn('python', processGan);
 
   pro.on('close', (code) => {
-    const run = spawn('python', runGan);
-    run.on('close', (code) => {
-      console.log('it is done!');
-      res.send(time);
+    models.forEach((model) =>{
+      var runGan = ['./GAN/pix2pix.py', '--mode', 'test', '--output_dir', './public/imgs/gans/'+time, '--input_dir', './GAN/images/inputs/'+time, '--checkpoint', './GAN/models/'+model+'_train'];
+      const run = spawn('python', runGan);
+      run.on('close', (code) => {
+        console.log('it is done!');
+        res.send(time);
+      });
     })
   });
 });

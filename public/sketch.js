@@ -44,7 +44,7 @@ var ady = []; // autodraw y
 var adt = []; // autodraw time
 var adHistory = []; // array of AD drawings added to canvas so it can be repopulated
 
-var ganType = "pizza"; // the state of the GAN filter. changes when clicking the buttons.
+var ganType = "bw"; // the state of the GAN filter. changes when clicking the buttons.
 
 
 var s1 = function( p ) {
@@ -436,20 +436,24 @@ export_button.addEventListener('click', () => {
     data: {'image': imageData, 'type': ganType},
     success: function(res){
       if(res){
-        var imgID = res;
-        displayGan(imgID);
+        var imgID = res.time;
+        var models = res.models;
+        displayGan(imgID,models);
       }
     }
   });
 })
 
 
-var displayGan = function(id) {
+var displayGan = function(id,models) {
   addClass(spinner,'hidden');
   var canvas = document.getElementById('defaultCanvas0');
   canvas.style.webkitFilter = "blur(0px)";
-  var path = './imgs/gans/'+id+'/images/sketch-outputs.png'
-  suggestionArr[0].innerHTML += '<img id="img0" class="suggestion-img" src="' + path + '"/>';
+
+  models.forEach((model,i) => {
+    var path = './imgs/gans/'+id+'/'+model+'/images/sketch-outputs.png'
+    suggestionArr[i].innerHTML += '<img id="img0" class="suggestion-img" src="' + path + '"/>';
+  })
 }
 
 

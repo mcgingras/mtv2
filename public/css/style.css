@@ -10,13 +10,14 @@
 
 body{
   font-family: 'Apercu';
-  padding: 0 6rem;
+  padding: 0 8rem;
   background-color: #EBEDF2;
   color: #0E0A17;
 }
 
-button{ font-family: 'Apercu';}
+button{ font-family: 'Apercu'; cursor: pointer; transition: 0.4s;}
 button:focus {outline:0;}
+button:hover {background-color: #49347E;}
 
 img{
   max-width: 200px;
@@ -32,6 +33,16 @@ canvas{
   background-color: #FFFFFF;
 }
 
+.container{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container--large{height: 80%; margin-top: 8rem;}
+.container--small{height: 20%; margin-top: 2rem;}
+
 .button{
   background-color: #A282F3;
   color: #FFF;
@@ -43,12 +54,17 @@ canvas{
 
 .suggestion-container{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   height: 600px;
   width: 600px;
   justify-content: space-between;
-  align-items: center;
+  align-items: top;
+}
+
+.suggestion-container div{
+  display: flex;
+  justify-content: space-between;
 }
 
 .suggestion-item{
@@ -69,18 +85,23 @@ canvas{
   left: 0;
 }
 
-.container{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.container--large{height: 80%; margin-top: 6rem;}
-.container--small{height: 20%; margin-top: 2rem;}
-
 .button--active{
   background-color: #49347E;
+}
+
+.button--center{
+  margin: 0 auto;
+  display: block;
+}
+
+.button-group{
+  width: 600px;
+  display: block;
+}
+
+.button-group--flex{
+  display: flex;
+  justify-content: space-between;
 }
 
 .main-canvas{

@@ -37,21 +37,28 @@ app.post('/save', (req, res) => {
   else if (type == "watercolor"){
     models.push('rose');
     models.push('space');
+    models.push('pabloortiz');
+    models.push('chenjie');
   }
 
   else if (type == "bw"){
     models.push('pointilism');
+    models.push('jiomaia');
   }
 
   const pro = spawn('python', processGan);
 
+  var count = 0;
   pro.on('close', (code) => {
     models.forEach((model) =>{
-      var runGan = ['./GAN/pix2pix.py', '--mode', 'test', '--output_dir', './public/imgs/gans/'+time, '--input_dir', './GAN/images/inputs/'+time, '--checkpoint', './GAN/models/'+model+'_train'];
+      var runGan = ['./GAN/pix2pix.py', '--mode', 'test', '--output_dir', './public/imgs/gans/'+time+'/'+model, '--input_dir', './GAN/images/inputs/'+time, '--checkpoint', './GAN/models/'+model+'_train'];
       const run = spawn('python', runGan);
       run.on('close', (code) => {
-        console.log('it is done!');
-        res.send(time);
+        count++;
+        console.log('it is done! '+model);
+        if(count == models.length){
+          res.send({'time': time, 'models': models});
+        }
       });
     })
   });

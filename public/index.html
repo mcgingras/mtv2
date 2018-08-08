@@ -25,23 +25,29 @@
         <div class="lds-dual-ring hidden" id="js--loading-spinner"></div>
       </div>
       <div class="suggestion-container">
-        <div id="js--suggest-1" class="suggestion-item"></div>
-        <div id="js--suggest-2" class="suggestion-item"></div>
-        <div id="js--suggest-3" class="suggestion-item"></div>
-        <div id="js--suggest-4" class="suggestion-item"></div>
+        <div>
+          <div id="js--suggest-1" class="suggestion-item"></div>
+          <div id="js--suggest-2" class="suggestion-item"></div>
+        </div>
+        <div>
+          <div id="js--suggest-3" class="suggestion-item"></div>
+          <div id="js--suggest-4" class="suggestion-item"></div>
+        </div>
       </div>
     </div>
 
     <div class="container container--small">
       <div class="button-group">
-        <button id="submit" class="button">submit</button>
-        <button id="export" class="button">export</button>
+        <button id="submit" class="button button--center">Submit</button>
       </div>
 
-      <div class="button-group">
-        <button id="js--pizza" data-type="pizza" class="button--active button">Pizza</button>
-        <button id="js--watercolor" data-type="watercolor" class="button">Watercolor</button>
-        <button id="js--bw" data-type="bw" class="button">Black & White</button>
+      <div class="button-group button-group--flex">
+        <div>
+                    <button id="js--bw" data-type="bw" class="button--active button">Black & White</button>
+          <button id="js--watercolor" data-type="watercolor" class="button">Watercolor</button>
+          <button id="js--pizza" data-type="pizza" class="button">Pizza</button>
+        </div>
+        <button id="export" class="button">Stylize</button>
       </div>
     </div>
 
